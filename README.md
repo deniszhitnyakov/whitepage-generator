@@ -9,7 +9,7 @@
 3. Запаковывать полученные статьи в адаптивный многостраничный сайт с одной из рамдоных тем, предоставленных сайтом [bootswatch.com](https://bootswatch.com/)
 4. Если в адресе перехода имеется параметр `?pixel=XXX`, то на странице подгрузится пиксель FB с событием PageView (просмотр страницы)
 
-Пример сгенерированной белой страницы - [https://v4.dolphin.ru.com/white](https://v4.dolphin.ru.com/white)
+Пример сгенерированной белой страницы - <a target="_blank" href="https://v4.dolphin.ru.com/white/w.php">https://v4.dolphin.ru.com/white/w.php</a>
 
 ## Настройки скрипта
 

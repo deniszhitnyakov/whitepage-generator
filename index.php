@@ -50,9 +50,13 @@ $tr->setOptions( [ 'proxy' => $proxy ] );
  * */
 $articles = [];
 
-if ( defined( 'STDIN' ) ) echo "Получаю ссылки на статьи\n";
+echo "Получаю ссылки на статьи<br>";
+flush();
+
 for ( $page = $startPage; $page <= $startPage + $depth; $page++ ) {
-    if ( defined( 'STDIN' ) ) echo "Просматриваю страницу #$page\n";
+    echo "Просматриваю страницу #$page<br>";
+    flush();
+
     $html = file_get_html( "$site&page=$page" );
 
     foreach ( $html->find( 'a' ) as $a ) {
@@ -84,7 +88,8 @@ for ( $i = 1; $i <= $articlesCount; $i++ ) {
      * ОБЩИЙ ПАРСИНГ СТАТЬИ
      *
      * */
-    if ( defined( 'STDIN' ) ) echo "Обрабатываю статью #$i\n";
+    echo "Обрабатываю статью #$i<br>";
+    flush();
     $article = $articles[ array_rand( $articles ) ];
     unset( $articles[ $rand ] );
     $translated = [];
@@ -161,15 +166,19 @@ for ( $i = 1; $i <= $articlesCount; $i++ ) {
  * */
 if ( $withImages ) {
     foreach ( $posts as $post ) {
-        $imageFile = "$dir/{$post['id']}.jpg";
 
+        echo "Загружаю изображение #{$post['id']}<br>";
+        flush();
+
+        $imageFile = "$dir/{$post['id']}.jpg";
         $image = getImage();
-        echo "Загружаю изображение #{$post['id']}\n";
+
         file_put_contents( $imageFile, file_get_contents( $image ) );
     }
 }
 
-if ( defined( 'STDIN' ) ) echo "Выполняю прочую мелочевку\n";
+echo "Выполняю прочую мелочевку<br>";
+flush();
 
 /*
  *
@@ -206,32 +215,6 @@ $config = [
     'theme' => $theme,
 ];
 file_put_contents( "$dir/config.json", json_encode( $config ) );
-
-/*
- *
- * СОЗДАНИЕ АРХИВА
- *
- * */
-if ( defined( 'STDIN' ) ) echo "Создаю архив\n";
-$zipFile = "$dir/white.zip";
-if ( file_exists( $zipFile ) ) unlink( $zipFile );
-zipData( $dir, $zipFile );
-
-if ( defined( 'STDIN' ) ) {
-    echo "Архив с вайтом готов! Он лежит в output/white.zip\n";
-} else {
-    header( "Pragma: public" );
-    header( "Expires: 0" );
-    header( "Cache-Control: must-revalidate, post-check=0, pre-check=0" );
-    header( "Cache-Control: public" );
-    header( "Content-Description: File Transfer" );
-    header( "Content-type: application/octet-stream" );
-    header( "Content-Disposition: attachment; filename=white.zip" );
-    header( "Content-Transfer-Encoding: binary" );
-    header( "Content-Length: " . filesize( $zipFile ) );
-    ob_end_flush();
-    @readfile( $zipFile );
-}
 
 function getImage () {
     usleep( 1000000 );

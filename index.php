@@ -91,7 +91,9 @@ for ( $i = 1; $i <= $articlesCount; $i++ ) {
     echo "Обрабатываю статью #$i<br>";
     flush();
 
-    $article = $articles[ array_rand( $articles ) ];
+    $a = array_rand( $articles );
+    $article = $articles[ $a ];
+    unset( $articles[ $a ] );
     $translated = [];
 
     $html = file_get_html( $article );
